@@ -1,0 +1,10 @@
+.selectBox {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border: 1px solid rgb(64 158 255);
+  background-color: rgba(64, 158, 255, .2);
+  display: none;
+}
