@@ -27,9 +27,26 @@ Vue.config.keyCodes.f1 = 113
 $.ajaxSetup({
   headers: {
     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+  },
+
+  // 全局监控，如果返回status == -2，表示未登录，重定向到SSO
+  success: (data) => {
+
+    if (data.status === -2) {
+
+      data.status = -1,
+      data.msg = data.realMsg
+      let ssoUrl = data.data.sso
+      ssoUrl = `${ssoUrl}?serve=${window.location.href}`
+      setTimeout(
+        () => window.location.replace(ssoUrl),
+        1000
+      )
+
+    }
+
   }
 });
-
 
 import router from './router'
 new Vue({
