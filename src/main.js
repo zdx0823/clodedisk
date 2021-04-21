@@ -31,7 +31,7 @@ $.ajaxSetup({
 
   // 全局监控，如果返回status == -2，表示未登录，重定向到SSO
   success: (data) => {
-
+    console.log(data);
     if (data.status === -2) {
 
       data.status = -1,

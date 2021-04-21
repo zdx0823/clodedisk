@@ -7,12 +7,12 @@
       </div>
       <div class="title">{{title}}</div>
       <!-- 下拉菜单 -->
-      <el-dropdown class="downList">
+      <el-dropdown class="downList" @command="onDownMenuChange">
         <span class="el-dropdown-link">
           用户3<i class="icon el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item class="downItem">
+          <el-dropdown-item class="downItem" command="logout">
             <span :style="downItemIcon" class="icon iconfont iconexit01-copy"></span>
             退出
           </el-dropdown-item>
@@ -57,8 +57,9 @@
 import $ from 'jquery'
 import qq from 'fine-uploader'
 import {mapActions, mapState} from 'vuex'
-import { deJson } from './util'
+import { deJson, notify } from './util'
 import APIURL from './apiUrl'
+import apiUrl from './apiUrl'
 
 let uploader = new qq.FineUploaderBasic({
   autoUpload: true,
@@ -180,6 +181,35 @@ const vm = {
     // 返回上一级
     goBack () {
       this.$router.back()
+    },
+
+    onLogout () {
+
+      // 
+
+      $.post(apiUrl.LOGOUT).then(res => {
+
+        const {data} = deJson(res)
+        
+        const tgc = data.tgc
+
+        const url = `${apiUrl.LOGOUT_SSO}?tgc=${tgc}`
+
+        window.location.replace(url)
+
+      })
+
+    },
+
+    // 下拉菜单点击事件
+    onDownMenuChange (command) {
+
+      switch (command) {
+        case 'logout':
+          this.onLogout()
+          break;
+      }
+
     }
   },
   computed: {
@@ -190,8 +220,7 @@ const vm = {
   },
   watch: {},
   mounted () {
-    window.vm = this
-    window.$ = $
+    this.notify = notify(this)
     this.autoLogin()
     this.initUploaderCallback()
   }

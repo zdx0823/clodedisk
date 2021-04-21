@@ -8,7 +8,8 @@ const RENAME_FILE = `${PREFIX}/api/clodedisk/file/name`
 const PASET = `${PREFIX}/api/clodedisk/resource/copy`
 const PASET_CUT = `${PREFIX}/api/clodedisk/resource/cut`
 const UPLOAD = `${PREFIX}/api/clodedisk/upload`
-
+const LOGOUT = `${PREFIX}/api/clodedisk/logout`
+const LOGOUT_SSO = `http://localhost:90/logout/sso`
 
 export default {
   NEW_FOLDER,
@@ -20,4 +21,6 @@ export default {
   PASET_CUT,
   PREFIX,
   UPLOAD,
+  LOGOUT,
+  LOGOUT_SSO,
 }
