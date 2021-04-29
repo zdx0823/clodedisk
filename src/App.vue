@@ -19,31 +19,36 @@ export default {
     ...mapActions(['setAppClick', 'setAppKeyF2', 'setAppKeyCtrlC', 'setAppKeyCtrlV']),
     onAppClick () {
       this.setAppClick(Date.now())
+    },
+
+    // 设置全局按键侦听
+    bindGlobalKey () {
+      $(document).on('keyup', (event) => {
+        let keyCode = event.keyCode
+        let isCtrl = event.ctrlKey
+
+        // f2按下
+        if (keyCode === 113) {
+          this.setAppKeyF2(Date.now())
+        }
+
+        // ctrl键
+        if (isCtrl) {
+          // C
+          if (keyCode === 67) {
+            this.setAppKeyCtrlC(Date.now())
+          }
+
+          // V
+          if (keyCode === 86) {
+            this.setAppKeyCtrlV(Date.now())
+          }
+        }
+      })
     }
   },
   mounted () {
-    $(document).on('keyup', (event) => {
-      let keyCode = event.keyCode
-      let isCtrl = event.ctrlKey
-
-      // f2按下
-      if (keyCode === 113) {
-        this.setAppKeyF2(Date.now())
-      }
-
-      // ctrl键
-      if (isCtrl) {
-        // C
-        if (keyCode === 67) {
-          this.setAppKeyCtrlC(Date.now())
-        }
-
-        // V
-        if (keyCode === 86) {
-          this.setAppKeyCtrlV(Date.now())
-        }
-      }
-    })
+    this.bindGlobalKey()
   }
 }
 </script>
