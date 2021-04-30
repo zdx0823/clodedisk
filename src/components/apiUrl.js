@@ -31,6 +31,8 @@ const CHECK_LOGIN = `${PREFIX}/login/check_login`
 const SEND_CODE = `${PREFIX}/login/confirm/send_code`
 const CONFIRM_CODE = `${PREFIX}/login/confirm/confirm`
 
+// 是否需要二次验证
+const IS_NEED_CONFIRM = `${PREFIX}/login/confirm/is_need`
 
 export default {
   NEW_FOLDER,
@@ -50,4 +52,5 @@ export default {
   SEND_CODE,
   CONFIRM_CODE,
   LOGIN_SSO,
+  IS_NEED_CONFIRM,
 }
