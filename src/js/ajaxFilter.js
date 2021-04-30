@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import $ from 'jquery'
 import { deJson } from '../components/util'
 import apiUrl from '../components/apiUrl'
@@ -40,7 +41,8 @@ AjaxFilter.filter_3 = function (vm, msg, realMsg) {
 AjaxFilter.filter_2 = function (vm, msg, realMsg) {
 
     vm.notify.error(realMsg)
-    window.location.replace(apiUrl.LOGIN_SSO)
+    let url = `${apiUrl.LOGIN_SSO}?serve=${apiUrl.BASE}`
+    window.location.replace(url)
 }
 
 

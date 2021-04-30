@@ -57,11 +57,19 @@ const router = new VueRouter({
  */
 class Auth {
 
+  constructor () {
+    this.isChecked = false
+  }
+
+
   /**
    * 出口方法
    */
   check (next) {
 
+    if (this.isChecked === true) return next()
+
+    this.isChecked = true
     this.checkLogin().then(res => {
 
       if (res) return next()
@@ -123,9 +131,9 @@ class Auth {
  * 2-1. 可用，重定向
  * 2-2. 不可用，重定向回sso
  */
+const auth = new Auth()
 router.beforeEach((to, from, next) => {
 
-  const auth = new Auth()
   auth.check(next)
 })
 
