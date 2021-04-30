@@ -32,6 +32,13 @@ import $ from 'jquery'
 import apiUrl from './apiUrl';
 import {deJson, notify} from './util'
 
+
+/**
+ * 发送验证码请求
+ * 1. 发送请求，禁止重复发送
+ * 2. 按钮设置为不可用，按钮开始倒计时
+ * 3. 反馈结果
+ */
 class SEND_CODE {
 
     constructor () {
@@ -55,8 +62,13 @@ class SEND_CODE {
 
     send () {
         
-        $.post(apiUrl.SEND_CODE)
-        this.vm.notify.succ(SEND_CODE.SEND_SUCC)
+        $.post(apiUrl.SEND_CODE).then(res => {
+            const {status, msg, realMsg} = deJson(res)
+
+            if (status === 1) return this.vm.notify.succ(msg)
+
+            return this.vm.notify.error(realMsg)
+        })
 
         this.disableBtnCss()
         this.curCount = SEND_CODE.timeout
@@ -93,14 +105,18 @@ class SEND_CODE {
     }
 
 }
-SEND_CODE.timeout = 5
+SEND_CODE.timeout = 60
 SEND_CODE.BTN_LABEL = '发送验证码'
 SEND_CODE.SEND_NOTICE = '验证码已发送，请勿重复操作'
 SEND_CODE.SEND_SUCC = '验证码已发送，请到邮箱查看'
 
-const sendCode = new SEND_CODE()
 
-
+/**
+ * 发送核实验证码请求
+ * 1. 发送请求，禁止重复发送
+ * 2. 按钮样式改为不可用状态
+ * 3. 根据返回结果决定是否重定向回首页
+ */
 class SUBMIT_CODE {
 
     constructor () {
@@ -119,7 +135,7 @@ class SUBMIT_CODE {
         this.vm.submitBtnType = 'success'
     }
 
-    submit () {
+    submit (succ) {
 
         let code = this.vm.code
         if (code.length === 0) {
@@ -139,22 +155,23 @@ class SUBMIT_CODE {
                 return
             }
 
-            this.succ()
+            succ()
             this.sending = false
             this.usableBtnCss()
         })
     }
 
-    do (vm) {
-        this.vm = vm
+    do (vm, succ = () => {}) {
 
-        this.submit()
+        this.vm = vm
+        this.submit(succ)
     }
 }
 SUBMIT_CODE.CODE_VAL_ERR = '验证码不能为空'
 
-const submitCode = new SUBMIT_CODE()
 
+const sendCode = new SEND_CODE()
+const submitCode = new SUBMIT_CODE()
 export default {
     name: 'Confirm',
     data: () => ({
@@ -172,7 +189,11 @@ export default {
 
         submit () {
             
-            submitCode.do(this)
+            submitCode.do(this, () => {
+                this.$router.push({
+                    name: 'index'
+                })
+            })
         }
     },
     mounted () {
