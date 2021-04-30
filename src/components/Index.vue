@@ -9,7 +9,7 @@
       <!-- 下拉菜单 -->
       <el-dropdown class="downList" @command="onDownMenuChange">
         <span class="el-dropdown-link">
-          用户3<i class="icon el-icon-arrow-down el-icon--right"></i>
+          {{userInfo.username}}<i class="icon el-icon-arrow-down el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item class="downItem" command="logout">
@@ -92,7 +92,8 @@ const vm = {
     },
     isCollapse: false,
     collapseLabel: '收起',
-    curInUploadNum: 0
+    curInUploadNum: 0,
+    userInfo: {}
   }),
   methods: {
     ...mapActions('index', [
@@ -210,6 +211,14 @@ const vm = {
           break;
       }
 
+    },
+
+    // 获取用户信息
+    getUserInfo () {
+      $.get(apiUrl.USER_INFO).then(res => {
+        const {data} = deJson(res)
+        this.userInfo = data
+      })
     }
   },
   computed: {
@@ -223,6 +232,7 @@ const vm = {
     this.notify = notify(this)
     this.autoLogin()
     this.initUploaderCallback()
+    this.getUserInfo()
   }
 }
 export default vm

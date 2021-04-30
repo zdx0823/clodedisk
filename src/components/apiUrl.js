@@ -34,6 +34,9 @@ const CONFIRM_CODE = `${PREFIX}/login/confirm/confirm`
 // 是否需要二次验证
 const IS_NEED_CONFIRM = `${PREFIX}/login/confirm/is_need`
 
+// 拉取用户信息
+const USER_INFO = `${PREFIX}/user_info`
+
 export default {
   NEW_FOLDER,
   LIST_BY_PATH,
@@ -53,4 +56,5 @@ export default {
   CONFIRM_CODE,
   LOGIN_SSO,
   IS_NEED_CONFIRM,
+  USER_INFO,
 }
